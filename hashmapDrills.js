@@ -21,14 +21,15 @@ class HashMap {
     if (loadRatio > HashMap.MAX_LOAD_RATIO) {
       this._resize(this._capacity * HashMap.SIZE_RATIO);
     }
-
     const index = this._findSlot(key);
+    if(!this._slots[index]) {
+      this.length++;
+    }
     this._slots[index] = {
       key,
       value,
       deleted: false
-    };
-    this.length++;
+    };   
   }
 
   remove(key) {
@@ -52,10 +53,17 @@ class HashMap {
       const slot = this._slots[index];
       console.log('slot',slot);
       console.log('index',index);
-      if (slot === undefined || (slot.key == key && !slot.deleted)) {
+      
+      if ((slot === undefined) ||  (slot.key === key && !slot.deleted )) {
         return index;
       }
     }
+  }
+
+  toggleKeyExistence(key){
+    let index = this._findSlot(key);
+    const slot = this._slots[index];
+    (slot === undefined) ? this.set(key) : this.remove(key);
   }
 
   _resize(size) {
@@ -87,12 +95,12 @@ HashMap.MAX_LOAD_RATIO = 0.9;
 HashMap.SIZE_RATIO = 3;
 
 
-let lor = new HashMap();
-lor.set('Hobbit','Bilbo');
-console.log('New Set added-----------------------------\n',lor);
-lor.set('Tobbih','Frodo');
-console.log('Get-----------------------------',lor.get('Hobbit'));
-console.log('New Set added-----------------------------\n',lor);
+// let lor = new HashMap();
+// lor.set('Hobbit','Bilbo');
+// console.log('New Set added-----------------------------\n',lor);
+// lor.set('Tobbih','Frodo');
+// console.log('Get-----------------------------',lor.get('Hobbit'));
+// console.log('New Set added-----------------------------\n',lor);
 //console.log(lor.get('Hobbit'));
 //lor.set('Hobbit','Frodo');
 //console.log('\nNew Set added-----------------------------\n',lor);
@@ -116,3 +124,57 @@ console.log('New Set added-----------------------------\n',lor);
 // lor.set('Ent','Treebeard');
 // console.log('New Set added-----------------------------\n',lor);
 // console.log('Get-----------------------------',lor.get('Maiar'));
+
+const permutation = (string) => {
+  const newMap = new HashMap();
+  for (let i = 0; i < string.length; i +=1){
+    newMap.toggleKeyExistence(string.charAt(i));
+  }
+  console.log((newMap.length===0||newMap.length===1)?true:false);
+};
+
+permutation('strrts');
+
+
+
+let obj = {
+  key:[]
+};
+let array = [];
+
+obj.forEachKey (array.push('object key values'));
+
+
+key hash value
+key : value
+['east', 'cars', 'acre', 'arcs', 'teas', 'eats', 'race']
+
+doesnt exist in hashmap => get will return error
+set in hashmap && created in object
+obj[key]= 
+
+does exist in hashmap
+obj[key].push('string')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
